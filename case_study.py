@@ -9,6 +9,7 @@ import torch.nn.functional as F
 import torch_geometric.transforms as T
 from torch_geometric.data import HeteroData
 from model import FPN_GCN
+from utils import load_parameters
 from data_load import load_and_preprocess_data
 
 
@@ -299,9 +300,13 @@ def plot_pathway_sankey(edges_data, disease_name):
     fig.show()
 
 
-def test():
+def case_study_test(case_disease_id=192):
 
     N_M, N_G, N_D, x_m, x_g, x_d, m2g_mask, g2d_thresholds, g2d_mask, id2m, id2g, id2d = load_and_preprocess_data(case_study_flage=True)
+
+    cfg = load_parameters()
+    best_model_path = cfg["case"]["best_model_path"]
+    # best_model_path = './res/best_model/save_model/best_model_weights.pth'
 
     data = HeteroData()
     data['miRNA'].x = x_m
@@ -317,14 +322,14 @@ def test():
     N_M=N_M, N_G=N_G, N_D=N_D,
     m2g_mask=m2g_mask, g2d_thresholds=g2d_thresholds, g2d_mask=g2d_mask)
 
-    best_model_path = './res/best_model/save_model/best_model_weights.pth'
+    
 
     model.load_state_dict(torch.load(best_model_path, weights_only=True, map_location=torch.device('cpu')))
 
-    diabetes_data, diabetes_name = case_study_extract(model, data, id2m, id2g, id2d, disease_id=192)
+    diabetes_data, diabetes_name = case_study_extract(model, data, id2m, id2g, id2d, disease_id=case_disease_id)
 
     plot_pathway_sankey(diabetes_data, diabetes_name)
 
 
 if __name__ == "__main__":
-    test()
+    case_study_test()

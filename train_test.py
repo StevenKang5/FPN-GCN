@@ -243,3 +243,11 @@ def run_10_fold_cv(beta=None):
 
             print(f"Fold {fold_num+1} Test AUC: {auc:.4f}, AUPR: {aupr:.4f}, Acc: {acc:.4f}, Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
             # print(f"time: avg = {np.mean(all_time)}")
+
+
+def train_model():
+    run_10_fold_cv()
+
+
+if __name__ == "__main__":
+    train_model()

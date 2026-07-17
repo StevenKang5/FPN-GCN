@@ -3,6 +3,7 @@ import numpy as np
 import torch.nn as nn
 import torch
 import os
+import shutil
 import seaborn as sns
 import matplotlib.pyplot as plt
 import torch_geometric.transforms as T
@@ -13,7 +14,7 @@ from data_load import load_and_preprocess_data
 from config import load_config
 
 
-def print_10_fold_res(base_dir="./ablation/test/CV_results"): 
+def print_10_fold_res(base_dir="./ablation/test/CV_results", flage=False): 
     tprs = []
     aucs = []
     mean_fpr = np.linspace(0, 1, 100)
@@ -87,6 +88,24 @@ def print_10_fold_res(base_dir="./ablation/test/CV_results"):
     print(f"Based on AUPR, the fold closest to the mean value is Fold {aupr_closest}.")
     print(f"Based on AUC, the fold closest to the mean value is Fold {aucs_closest}.")
     print("="*40 + "\n")
+
+    if flage:
+        model_filename = "best_model_weights.pth" 
+        best_fold_num = aucs_closest
+        parent_dir = os.path.abspath(os.path.join(base_dir, ".."))
+        src_model_path = os.path.join(base_dir, f"fold_{best_fold_num}", model_filename)
+        dst_model_dir = os.path.join(parent_dir, "best_model")
+        dst_model_path = os.path.join(dst_model_dir, "final_model.pth") 
+
+        if os.path.exists(src_model_path):
+            os.makedirs(dst_model_dir, exist_ok=True)
+            
+            shutil.copy2(src_model_path, dst_model_path)
+            print(f"successfully, Fold {best_fold_num} model copy to: {dst_model_path}")
+        else:
+            print(f"Error: Can find original model {src_model_path}")
+    
+    return (np.mean(aucs), np.mean(auprs), np.mean(fold_f1s), np.mean(fold_recs), np.mean(fold_precs), np.mean(fold_accs))
     
 
 def draw_beta_embedding_new(beta=[1.0, 5.0, 10.0, -1], embedding=[32, 64, 128], base_dir = "./ablation/GPU/final/ablation/beta/"):
@@ -111,7 +130,7 @@ def draw_beta_embedding_new(beta=[1.0, 5.0, 10.0, -1], embedding=[32, 64, 128], 
                 base_dir += str(e) + "/beta_" + str(b)
             else:
                 base_dir += str(e) + "/simple/adaptive1_10"
-            values = plot_10_fold_curves(base_dir)
+            values = print_10_fold_res(base_dir)
             all_values[(b, e)] = values
             label = f'β={b}, emb={e}' if b != -1 else f'β=dynamic, emb={e}'
             ax.plot(x, values,

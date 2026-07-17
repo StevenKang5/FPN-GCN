@@ -59,7 +59,7 @@ def fold_generation():
 
     with open("final_train_val_test_data.json", "w") as f:
         json.dump(fold_indices, f)
-    print("10-fold cross-validation indices have been successfully saved.")
+    print(f"{fold_max}-fold cross-validation indices have been successfully saved.")
 
 
 def main():

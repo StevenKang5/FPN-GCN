@@ -11,5 +11,5 @@ optimizer:
 model:
   hidden_dim: 64
 
-case study:
-  best_model_path: "./res/best_model/save_model/best_model_weights.pth"
+case:
+  best_model_path: "./res/best_model/best_model_weights.pth"
