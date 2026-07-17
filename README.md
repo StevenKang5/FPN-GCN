@@ -1,5 +1,8 @@
 # Interpretable miRNA-Disease Association Prediction through Knowledge-Guided Graph Learning and Fuzzy Logical Reasoning
 
+## Graphical Abstract
+![alt text](framework.jpg)
+
 ## Project Structure
 ```text
 .
