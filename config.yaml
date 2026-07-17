@@ -1,0 +1,15 @@
+train:
+  epochs: 100
+  seed: 42
+  l1_weight: 0.001
+  cv_results_dir: "./res/model"
+  fold: 10
+
+optimizer:
+  lr: 0.001
+  
+model:
+  hidden_dim: 64
+
+case study:
+  best_model_path: "./res/best_model/save_model/best_model_weights.pth"
