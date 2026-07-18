@@ -125,7 +125,6 @@ def run_10_fold_cv(beta=None):
         # all_time = []
         model.train()
         for epoch in range(1, epoch_set+1):
-            # start_time = time.time()
             optimizer.zero_grad()
             
             train_samples = np.array(splits[fold_name]["train"][f"epoch_{epoch}"]["train_epoch"])
@@ -140,7 +139,8 @@ def run_10_fold_cv(beta=None):
                     target_labels[u, v] = 1.0
 
             model.fpn_beta = 1.0 + 9.0 * ((epoch-1) / epoch_set) 
-        
+            # torch.cuda.synchronize()
+            # start_time = time.time()
             train_preds, train_m2g, train_g2d, train_explore_m2g, train_explore_g2d = model(data.x_dict, data.edge_index_dict)
 
 
@@ -155,6 +155,8 @@ def run_10_fold_cv(beta=None):
 
             loss.backward()
             optimizer.step()
+            
+            # torch.cuda.synchronize()
             # epoch_time = time.time() - start_time
             # print(f"epoch time: {epoch_time}")
             # all_time.append(epoch_time)

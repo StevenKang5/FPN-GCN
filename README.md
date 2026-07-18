@@ -56,7 +56,7 @@ data
 Preprocess the dataset:
 
 ```bash
-python preprocess.py
+python fold_data_generation.py
 ```
 
 After that, you will obtain `final_train_val_test_data.json`, which contains the k-fold cross-validation splits of the dataset. For each fold, negative samples are randomly generated for every training epoch to construct the training data dynamically.
