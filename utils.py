@@ -95,7 +95,7 @@ def print_10_fold_res(base_dir="./ablation/test/CV_results", flage=False):
         parent_dir = os.path.abspath(os.path.join(base_dir, ".."))
         src_model_path = os.path.join(base_dir, f"fold_{best_fold_num}", model_filename)
         dst_model_dir = os.path.join(parent_dir, "best_model")
-        dst_model_path = os.path.join(dst_model_dir, "final_model.pth") 
+        dst_model_path = os.path.join(dst_model_dir, "best_model_weights.pth") 
 
         if os.path.exists(src_model_path):
             os.makedirs(dst_model_dir, exist_ok=True)

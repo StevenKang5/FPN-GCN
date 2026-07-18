@@ -1,9 +1,6 @@
-import os
-import json
 import torch
-import time
-import numpy as np
 import pandas as pd
+import argparse
 import plotly.graph_objects as go
 import torch.nn.functional as F
 import torch_geometric.transforms as T
@@ -330,6 +327,19 @@ def case_study_test(case_disease_id=192):
 
     plot_pathway_sankey(diabetes_data, diabetes_name)
 
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--diseaseID",
+        type=int,
+        default=None,
+        help="The ID of disease"
+    )
+    args = parser.parse_args()
+
+    disease_id = args.diseaseID if args.diseaseID is not None else 192
+    case_study_test(disease_id)
+
 
 if __name__ == "__main__":
-    case_study_test()
+    main()
