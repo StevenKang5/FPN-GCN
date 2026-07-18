@@ -24,6 +24,7 @@ def run_10_fold_cv(beta=None):
     hidden_dim_size = cfg["model"]["hidden_dim"]
     cv_results_dir = cfg["train"]["cv_results_dir"]
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Current Device: {device}")
 
     random.seed(seed)
     np.random.seed(seed)
@@ -87,8 +88,8 @@ def run_10_fold_cv(beta=None):
         data = T.ToUndirected(merge=False)(data)
         data = data.to(device)
 
-        val_target_labels = torch.zeros((N_M, N_D))
-        val_calc_mask = torch.zeros((N_M, N_D))
+        val_target_labels = torch.zeros((N_M, N_D), device=device)
+        val_calc_mask = torch.zeros((N_M, N_D), device=device)
         # target_labels = torch.zeros((N_M, N_D))
         # train_calc_mask = torch.zeros((N_M, N_D))
 
@@ -129,8 +130,8 @@ def run_10_fold_cv(beta=None):
             
             train_samples = np.array(splits[fold_name]["train"][f"epoch_{epoch}"]["train_epoch"])
 
-            target_labels = torch.zeros((N_M, N_D))
-            train_calc_mask = torch.zeros((N_M, N_D))
+            target_labels = torch.zeros((N_M, N_D), device=device)
+            train_calc_mask = torch.zeros((N_M, N_D), device=device)
 
             for u, v, rel_type in train_samples:
                 u, v, rel_type = int(u), int(v), int(rel_type)
@@ -176,8 +177,8 @@ def run_10_fold_cv(beta=None):
                 val_labels_tensor = torch.tensor((val_samples[:, 2] > 0), dtype=torch.float32).to(val_preds.device)
                 val_logits = val_preds[val_u, val_v]
 
-                y_scores_val = val_logits.cpu().numpy()
-                y_true_val = val_labels_tensor.cpu().numpy()
+                y_scores_val = val_logits.detach().cpu().numpy()
+                y_true_val = val_labels_tensor.detach().cpu().numpy()
                 val_auc = roc_auc_score(y_true_val, y_scores_val)
                 val_aupr = average_precision_score(y_true_val, y_scores_val)
                 print(f"Epoch {epoch:03d} | Loss: {loss.item():.4f} | Val AUC: {val_auc:.4f}, Val AUPR: {val_aupr:.4f}")
