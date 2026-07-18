@@ -1,12 +1,12 @@
 train:
   epochs: 100
   seed: 42
-  l1_weight: 0.001
+  l1_weight: 1.0e-3
   cv_results_dir: "./res/model"
   fold: 10
 
 optimizer:
-  lr: 0.001
+  lr: 1.0e-3
   
 model:
   hidden_dim: 64
