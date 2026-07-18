@@ -1,0 +1,15 @@
+matplotlib==3.10.5
+networkx==3.5
+numpy==2.3.2
+pandas==3.0.3
+plotly==6.8.0
+scikit-learn==1.9.0
+scipy==1.17.1
+seaborn==0.13.2
+tensorboard==2.20.0
+tensorboard-data-server==0.7.2
+torch-geometric==2.8.0
+torch_cluster==1.6.3+pt28cu128
+torch_scatter==2.1.2+pt28cu128
+torch_sparse==0.6.18+pt28cu128
+torch_spline_conv==1.2.2+pt28cu128
