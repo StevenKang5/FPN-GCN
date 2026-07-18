@@ -44,7 +44,7 @@ pip install -r requirements.txt
 Download the dataset and place the files under:
 
 ```text
-datasets
+data
 │   └── final
 │       ├── disease_s.csv
 │       ├── hmdd_combined.csv
